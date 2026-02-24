@@ -10,12 +10,10 @@ interface Property {
     categoria: "Apartamento" | "Moradia" | "Comercial";
     country: "Portugal" | "EAU" | "EUA" | "Brasil";
     city: string;
-    currency: "EUR" | "USD" | "BRL" | "AED";
     priceValue: number;
     titulo: string;
     rua: string;
     zona: string;
-    preco: string;
     quartos: number;
     wc: number;
     area: number;
@@ -27,41 +25,41 @@ interface Property {
 const PROPERTIES: Property[] = [
     // Portugal
     {
-        id: 1, tipo: "Compra", categoria: "Apartamento", country: "Portugal", city: "Lisboa", currency: "EUR", priceValue: 850000,
+        id: 1, tipo: "Compra", categoria: "Apartamento", country: "Portugal", city: "Lisboa", priceValue: 850000,
         titulo: "Luxury T4 Duplex", rua: "Avenidas Novas", zona: "Lisboa",
-        preco: "850.000 €", quartos: 4, wc: 3, area: 180, refCode: "IP-PT01",
+        quartos: 4, wc: 3, area: 180, refCode: "IP-PT01",
         img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         tag: "Exclusivo"
     },
     // Dubai
     {
-        id: 2, tipo: "Compra", categoria: "Apartamento", country: "EAU", city: "Dubai", currency: "USD", priceValue: 1200000,
+        id: 2, tipo: "Compra", categoria: "Apartamento", country: "EAU", city: "Dubai", priceValue: 1200000,
         titulo: "Skyline Views Apartment", rua: "Downtown Dubai", zona: "Dubai Mall Area",
-        preco: "$1,200,000", quartos: 2, wc: 2, area: 150, refCode: "IP-DXB01",
+        quartos: 2, wc: 2, area: 150, refCode: "IP-DXB01",
         img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        tag: "Investment"
+        tag: "Dubai | Investment Opportunity"
     },
     // USA (Miami)
     {
-        id: 3, tipo: "Compra", categoria: "Moradia", country: "EUA", city: "Miami", currency: "USD", priceValue: 3500000,
+        id: 3, tipo: "Compra", categoria: "Moradia", country: "EUA", city: "Miami", priceValue: 3500000,
         titulo: "Oceanfront Mansion", rua: "Palm Island", zona: "Miami Beach",
-        preco: "$3,500,000", quartos: 6, wc: 5, area: 450, refCode: "IP-MIA01",
+        quartos: 6, wc: 5, area: 450, refCode: "IP-MIA01",
         img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         tag: "Premium"
     },
     // Brasil (Rio)
     {
-        id: 4, tipo: "Compra", categoria: "Apartamento", country: "Brasil", city: "Rio de Janeiro", currency: "BRL", priceValue: 2500000,
+        id: 4, tipo: "Compra", categoria: "Apartamento", country: "Brasil", city: "Rio de Janeiro", priceValue: 2500000,
         titulo: "Cobertura em Ipanema", rua: "Vieira Souto", zona: "Ipanema",
-        preco: "R$ 2.500.000", quartos: 3, wc: 3, area: 220, refCode: "IP-BR01",
+        quartos: 3, wc: 3, area: 220, refCode: "IP-BR01",
         img: "https://images.unsplash.com/photo-1566195992011-5f6b21e4d2a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         tag: "Novo"
     },
     // Brasil (SP)
     {
-        id: 5, tipo: "Compra", categoria: "Comercial", country: "Brasil", city: "São Paulo", currency: "BRL", priceValue: 4800000,
+        id: 5, tipo: "Compra", categoria: "Comercial", country: "Brasil", city: "São Paulo", priceValue: 4800000,
         titulo: "Escritório Triple A Faria Lima", rua: "Av. Faria Lima", zona: "Itaim Bibi",
-        preco: "R$ 4.800.000", quartos: 0, wc: 4, area: 500, refCode: "IP-BR02",
+        quartos: 0, wc: 4, area: 500, refCode: "IP-BR02",
         img: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
     }
 ];
@@ -90,11 +88,33 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
         }
     }, [geo, loadingGeo]);
 
+    const formatPrice = (value: number, country: string) => {
+        if (country === "Portugal") {
+            return new Intl.NumberFormat(lang === 'pt' ? 'pt-PT' : 'en-GB', {
+                style: 'currency',
+                currency: 'EUR',
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+        if (country === "Brasil") {
+            return new Intl.NumberFormat(lang === 'pt' ? 'pt-BR' : 'en-US', {
+                style: 'currency',
+                currency: 'BRL',
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+        // UAE and USA -> USD as requested
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(value);
+    };
+
     const filtered = PROPERTIES.filter((p) => {
         const matchesCountry = countryFilter === "All" || p.country === countryFilter;
         const matchesType = typeFilter === "All" || p.categoria === typeFilter;
 
-        // Simplified price filter logic
         let matchesPrice = true;
         if (priceRange === "Low") matchesPrice = p.priceValue < 500000;
         else if (priceRange === "Mid") matchesPrice = p.priceValue >= 500000 && p.priceValue <= 1500000;
@@ -108,7 +128,7 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
             <div className="container-custom">
                 <div className="mb-12">
                     <h2 className="text-3xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-                        {lang === "pt" ? "Portfólio Imobiliário Global" : "Global Real Estate Portfolio"}
+                        {t.title}
                     </h2>
                     <p className="text-slate-600 max-w-2xl text-lg mb-10">
                         {lang === "pt"
@@ -119,7 +139,7 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
                     {/* Advanced Filters */}
                     <div className="glass p-6 rounded-3xl border border-slate-200 shadow-premium flex flex-wrap gap-6 items-center">
                         <div className="flex-1 min-w-[200px]">
-                            <label className="input-label">{lang === "pt" ? "País" : "Country"}</label>
+                            <label className="input-label">{t.labelCountry}</label>
                             <select
                                 className="input-field rounded-xl"
                                 value={countryFilter}
@@ -134,13 +154,13 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
                         </div>
 
                         <div className="flex-1 min-w-[200px]">
-                            <label className="input-label">{lang === "pt" ? "Tipo de Imóvel" : "Property Type"}</label>
+                            <label className="input-label">{t.labelType}</label>
                             <select
                                 className="input-field rounded-xl"
                                 value={typeFilter}
                                 onChange={(e) => setTypeFilter(e.target.value)}
                             >
-                                <option value="All">{lang === "pt" ? "Todos" : "All"}</option>
+                                <option value="All">{t.filterAll}</option>
                                 <option value="Apartamento">{lang === "pt" ? "Apartamento" : "Apartment"}</option>
                                 <option value="Moradia">{lang === "pt" ? "Moradia" : "House"}</option>
                                 <option value="Comercial">{lang === "pt" ? "Comercial" : "Commercial"}</option>
@@ -148,7 +168,7 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
                         </div>
 
                         <div className="flex-1 min-w-[200px]">
-                            <label className="input-label">{lang === "pt" ? "Faixa de Preço" : "Price Range"}</label>
+                            <label className="input-label">{t.labelPrice}</label>
                             <select
                                 className="input-field rounded-xl"
                                 value={priceRange}
@@ -172,7 +192,7 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-60 group-hover:opacity-40" />
                                 <div className="absolute top-5 left-5 flex flex-col gap-2">
                                     <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full text-white bg-primary/80 backdrop-blur-md border border-white/20">
-                                        {p.country}
+                                        {p.country === "EAU" ? "Dubai" : p.country}
                                     </span>
                                     {p.tag && (
                                         <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full text-white grad-accent border border-white/20">
@@ -181,7 +201,9 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
                                     )}
                                 </div>
                                 <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
-                                    <p className="text-3xl font-black text-white tracking-tighter drop-shadow-lg">{p.preco}</p>
+                                    <p className="text-3xl font-black text-white tracking-tighter drop-shadow-lg">
+                                        {formatPrice(p.priceValue, p.country)}
+                                    </p>
                                 </div>
                             </div>
 
@@ -196,11 +218,11 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
 
                                 <div className="grid grid-cols-3 gap-4 pt-6 border-t border-slate-100 mt-auto">
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Area</span>
+                                        <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">{t.area}</span>
                                         <span className="text-sm font-extrabold text-slate-700">{p.area} m²</span>
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Beds</span>
+                                        <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">{t.bed}</span>
                                         <span className="text-sm font-extrabold text-slate-700">{p.quartos}</span>
                                     </div>
                                     <div className="flex flex-col text-right">
@@ -214,7 +236,7 @@ export default function PropertiesSection({ lang }: { lang: Lang }) {
                     {filtered.length === 0 && (
                         <div className="col-span-full py-20 text-center">
                             <p className="text-xl font-bold text-slate-400 italic">
-                                {lang === "pt" ? "Sem imóveis encontrados com estes filtros." : "No properties found with these filters."}
+                                {t.empty}
                             </p>
                         </div>
                     )}

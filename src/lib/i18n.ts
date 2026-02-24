@@ -11,7 +11,7 @@ export const translations = {
             precos: "Preços",
             sobre: "Sobre Nós",
             contactos: "Contactos",
-            intranet: "Intranet",
+            intranet: "Intranet Agentes",
             falarAgente: "Falar com Agente",
             ligue: "Ligue",
             local: "Portugal"
@@ -46,11 +46,17 @@ export const translations = {
             btn: "Conhecer a nossa História"
         },
         properties: {
-            title: "Imóveis em Destaque",
+            title: "Portfólio Imobiliário Global",
             filterAll: "Todos",
             viewDetails: "Ver Detalhes",
             bed: "Quartos",
-            bath: "Casas de Banho"
+            bath: "Casas de Banho",
+            area: "Área",
+            labelCountry: "País",
+            labelType: "Tipo de Imóvel",
+            labelPrice: "Faixa de Preço",
+            btnSearch: "Pesquisar",
+            empty: "Sem imóveis encontrados com estes filtros."
         },
         services: {
             title: "Os Nossos Serviços",
@@ -100,7 +106,7 @@ export const translations = {
             desc: "With over 10,000 properties and a network of specialized consultants, we make buying or renting your home a simple and secure process.",
             tabBuy: "Buy",
             tabRent: "Rent",
-            placeholder: "District, County, Property or Ref.",
+            placeholder: "District, Region, Property or Ref.",
             typePlaceholder: "Property Type",
             searchBtn: "Search",
             trust1: "Over 10,000 Properties",
@@ -108,8 +114,8 @@ export const translations = {
         },
         about: {
             title: "About Imóvel Zeta",
-            desc: "Imóvel Zeta started its operations in Portugal over 15 years ago with a clear objective: to revolutionize the real estate market through a service of excellence, transparency, and absolute professionalism.",
-            history: "Today we are the brand of choice for people when selling, buying, or renting a home. Our secret? Deep local knowledge combined with a very strong global network of contacts.",
+            desc: "Imóvel Zeta started its operations in Portugal over 15 years ago with a clear objective: to revolutionize the real estate market through excellence, transparency, and absolute professionalism.",
+            history: "Today we are the preferred choice for those selling, buying, or renting a home. Our secret? Deep local knowledge combined with a powerful global network.",
             stats: [
                 { label: "Years of Experience", value: "15+" },
                 { label: "Active Consultants", value: "340" },
@@ -117,18 +123,24 @@ export const translations = {
                 { label: "Properties Sold", value: "28k+" },
             ],
             benefits: [
-                "The largest real estate portal in Portugal",
+                "Portugal's leading real estate portal",
                 "Free legal and procedural support",
                 "Guaranteed fast sale at the best market price"
             ],
-            btn: "Know our History"
+            btn: "Discover Our History"
         },
         properties: {
-            title: "Featured Properties",
+            title: "Global Real Estate Portfolio",
             filterAll: "All",
             viewDetails: "View Details",
             bed: "Beds",
-            bath: "Baths"
+            bath: "Bathrooms",
+            area: "Area",
+            labelCountry: "Country",
+            labelType: "Property Type",
+            labelPrice: "Price Range",
+            btnSearch: "Search",
+            empty: "No properties found with these filters."
         },
         services: {
             title: "Our Services",
@@ -139,19 +151,19 @@ export const translations = {
             ]
         },
         contact: {
-            preTitle: "CONTACT US",
+            preTitle: "GET IN TOUCH",
             title: "We are here for you.",
-            desc: "Whether you want to buy, sell or just get advice about the real estate market in Portugal, our team is ready to help.",
+            desc: "Whether you want to buy, sell, or just need advice on the global real estate market, our team is ready to help.",
             formName: "Full Name",
             formEmail: "Email",
             formPhone: "Phone",
-            formMsg: "Contact Reason",
-            formConsent: "By submitting this form, I agree that Imóvel Zeta stores and processes personal data provided according to the Privacy Policy.",
+            formMsg: "Reason for Contact",
+            formConsent: "By submitting this form, I agree that Imóvel Zeta stores and processes personal data according to the Privacy Policy.",
             btnSend: "Send Message",
             sending: "Sending...",
-            seat: "National HQ",
+            seat: "Headquarters",
             support: "Support Line",
-            workDays: "Weekdays from 9am to 7pm"
+            workDays: "Weekdays 9am to 7pm"
         },
         footer: {
             rights: "All rights reserved.",

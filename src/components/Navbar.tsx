@@ -146,16 +146,6 @@ export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lan
                             </a>
                         ))}
                         <hr className="my-2 border-slate-100" />
-                        <button
-                            onClick={() => {
-                                setMobileMenuOpen(false);
-                                const el = document.getElementById("dashboard-layer");
-                                if (el) el.style.display = "block";
-                            }}
-                            className="block w-full text-left px-4 py-3 rounded text-slate-700 font-medium hover:bg-slate-50"
-                        >
-                            {t.intranet}
-                        </button>
                     </div>
 
                     <div className="p-4 border-t border-slate-100">
