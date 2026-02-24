@@ -1,29 +1,63 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingChat from "@/components/FloatingChat";
+import { translations } from "@/lib/i18n";
+
 
 export default function PrecosPage() {
+    const [lang, setLang] = useState<"pt" | "en">("pt");
+
+    // Auto-detection and Persistence
+    useEffect(() => {
+        const saved = localStorage.getItem("iz_language_pref");
+        if (saved === "pt" || saved === "en") {
+            setLang(saved);
+        } else {
+            // Browser detection
+            const browserLang = navigator.language.toLowerCase();
+            if (browserLang.startsWith("pt")) {
+                setLang("pt");
+            } else {
+                setLang("en");
+            }
+        }
+    }, []);
+
+    const handleSetLang = (newLang: "pt" | "en") => {
+        setLang(newLang);
+        localStorage.setItem("iz_language_pref", newLang);
+    };
+
     const handleCheckout = (planId: string) => {
         console.log("💳 Iniciando checkout para o plano:", planId);
         // Em produção, aqui redirecionaria para o Stripe Checkout:
         // window.location.href = `https://checkout.stripe.com/pay/${planId}`;
-        alert("Obrigado pelo seu interesse! Redirecionando para o Gateway de Pagamento Seguro (Stripe)...");
+        alert(lang === "pt"
+            ? "Obrigado pelo seu interesse! Redirecionando para o Gateway de Pagamento Seguro (Stripe)..."
+            : "Thank you for your interest! Redirecting to Secure Payment Gateway (Stripe)..."
+        );
     };
 
     return (
         <>
-            <Navbar />
+            <Navbar lang={lang} setLang={handleSetLang} />
             <main className="flex-1 bg-slate-50 pt-32 pb-24">
                 <div className="container-custom">
                     {/* Header */}
                     <div className="text-center mb-16">
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 mb-4">Escolha o seu Plano</h1>
+                        <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 mb-4">
+                            {lang === "pt" ? "Escolha o seu Plano" : "Choose Your Plan"}
+                        </h1>
                         <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Potencialize os seus resultados com a nossa tecnologia de ponta e suporte especializado.
+                            {lang === "pt"
+                                ? "Potencialize os seus resultados com a nossa tecnologia de ponta e suporte especializado."
+                                : "Boost your results with our cutting-edge technology and specialized support."}
                         </p>
                     </div>
+
 
                     {/* Pricing Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -111,8 +145,9 @@ export default function PrecosPage() {
                     </div>
                 </div>
             </main>
-            <Footer />
-            <FloatingChat />
+            <Footer lang={lang} />
+            <FloatingChat lang={lang} />
+
         </>
     );
 }
