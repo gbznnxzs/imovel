@@ -26,26 +26,23 @@ export default function Hero({ lang }: { lang: Lang }) {
             />
             {/* Gradient Overlay for Corporate Look */}
             <div
-                className="absolute inset-0 z-0"
-                style={{
-                    background: "linear-gradient(to right, rgba(0, 61, 165, 0.85), rgba(0, 40, 122, 0.6))"
-                }}
+                className="absolute inset-0 z-0 grad-primary opacity-85"
             />
 
             <div className="container-custom relative z-10">
                 <div className="max-w-3xl slide-up">
-                    <span className="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider mb-4 border border-white/30">
+                    <span className="inline-block py-1 px-4 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-white/30">
                         {t.badge}
                     </span>
-                    <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight mb-6 text-balance drop-shadow-lg">
+                    <h1 className="text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.1] mb-8 text-balance drop-shadow-2xl">
                         {t.title}
                     </h1>
-                    <p className="text-lg md:text-xl text-blue-50 mb-10 max-w-2xl text-balance drop-shadow-md">
+                    <p className="text-xl md:text-2xl text-blue-50/90 mb-12 max-w-2xl text-balance drop-shadow-lg font-medium leading-relaxed">
                         {t.desc}
                     </p>
 
                     {/* Search Box */}
-                    <div className="bg-white rounded-lg shadow-2xl p-2 md:p-3 max-w-4xl">
+                    <div className="glass rounded-2xl shadow-premium p-2 md:p-3 max-w-4xl border-white/20">
                         {/* Tabs */}
                         <div className="flex mb-3 border-b border-slate-200">
                             <button

@@ -3,13 +3,6 @@ import { Lang, translations } from "@/lib/i18n";
 export default function AboutSection({ lang }: { lang: Lang }) {
     const t = translations[lang].about;
 
-    const stats = [
-        { label: "Anos de Experiência", value: "15+" },
-        { label: "Consultores Ativos", value: "340" },
-        { label: "Agências em PT", value: "45" },
-        { label: "Imóveis Vendidos", value: "28k+" },
-    ];
-
     return (
         <section id="sobre-nos" className="section-pad bg-bg-alt border-y border-slate-200">
             <div className="container-custom">
@@ -28,36 +21,29 @@ export default function AboutSection({ lang }: { lang: Lang }) {
                             <p>
                                 {t.desc}
                             </p>
-
                             <p>
-                                Hoje somos a marca de eleição dos portugueses no momento de vender, comprar ou arrendar casa. O nosso segredo? Profundo conhecimento local aliado a uma rede global de contactos fortíssima.
+                                {t.history}
                             </p>
                         </div>
 
                         <ul className="mb-10 space-y-3 font-medium text-slate-700">
-                            <li className="flex items-center gap-3">
-                                <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                                O maior portal imobiliário de Portugal
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                                Acompanhamento jurídico e processual gratuito
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                                Garantia de venda rápida ao melhor preço de mercado
-                            </li>
+                            {t.benefits.map((benefit, i) => (
+                                <li key={i} className="flex items-center gap-3">
+                                    <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+                                    {benefit}
+                                </li>
+                            ))}
                         </ul>
 
                         <button className="btn btn-outline px-8 py-3">
-                            Conhecer a nossa História
+                            {t.btn}
                         </button>
                     </div>
 
                     {/* Stats Grid */}
                     <div className="lg:w-1/2 w-full">
                         <div className="grid grid-cols-2 gap-4 sm:gap-6">
-                            {stats.map((s) => (
+                            {t.stats.map((s) => (
                                 <div
                                     key={s.label}
                                     className="bg-white p-6 sm:p-8 rounded-lg shadow-sm border border-slate-200 text-center flex flex-col items-center justify-center transform transition-transform hover:-translate-y-1"
@@ -75,7 +61,7 @@ export default function AboutSection({ lang }: { lang: Lang }) {
                         {/* Trust badge */}
                         <div className="mt-6 flex items-center justify-center gap-3 bg-white p-4 rounded-lg shadow-sm border border-slate-200">
                             <span className="text-3xl text-yellow-400">★★★★★</span>
-                            <p className="font-semibold text-slate-700">4.9/5 Avaliação Google Reviews</p>
+                            <p className="font-semibold text-slate-700">4.9/5 {lang === 'pt' ? "Avaliação Google Reviews" : "Google Reviews Rating"}</p>
                         </div>
                     </div>
 

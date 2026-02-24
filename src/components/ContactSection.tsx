@@ -1,193 +1,175 @@
 "use client";
 
 import { useState } from "react";
-
-import { Lang } from "@/lib/i18n";
+import { Lang, translations } from "@/lib/i18n";
 
 export default function ContactSection({ lang }: { lang: Lang }) {
+    const t = translations[lang].contact;
     const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "", honeypot: "" });
     const [sent, setSent] = useState(false);
     const [enviando, setEnviando] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Anti-Bot Honeypot validation
-        if (form.honeypot) {
-            setSent(true);
-            return;
-        }
+        if (form.honeypot) return; // Silent discard for bots
 
         setEnviando(true);
-        // Simular chamada de API/Backend
-        await new Promise((r) => setTimeout(r, 1000));
-
-        setEnviando(false);
+        // Simulate API call
+        await new Promise(r => setTimeout(r, 1500));
         setSent(true);
+        setEnviando(false);
         setForm({ nome: "", email: "", telefone: "", mensagem: "", honeypot: "" });
-        setTimeout(() => setSent(false), 5000);
     };
 
     return (
-        <section id="contacto" className="section-pad bg-white border-t border-slate-200">
+        <section id="contactos" className="section-pad bg-slate-50">
             <div className="container-custom">
-                <div className="flex flex-col lg:flex-row gap-16">
+                <div className="flex flex-col lg:flex-row gap-16 lg:items-center">
 
-                    {/* Contact Info */}
-                    <div className="lg:w-1/3">
-                        <span className="text-sm font-bold text-accent uppercase tracking-wider mb-2 block">
-                            Fale Connosco
+                    {/* Left Column: Info */}
+                    <div className="lg:w-2/5">
+                        <span className="text-sm font-bold text-primary uppercase tracking-[0.2em] mb-4 block">
+                            {t.preTitle}
                         </span>
-                        <h2 className="text-3xl lg:text-4xl font-bold text-slate-800 mb-6">
-                            Estamos aqui para si.
+                        <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-800 mb-8 leading-tight">
+                            {t.title}
                         </h2>
-                        <p className="text-slate-600 mb-10 text-lg">
-                            Quer pretenda comprar, vender ou apenas aconselhar-se sobre o mercado imobiliário em Portugal, a nossa equipa está pronta para ajudar.
+                        <p className="text-lg text-slate-600 mb-12 leading-relaxed">
+                            {t.desc}
                         </p>
 
-                        <div className="space-y-8">
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-blue-50 text-primary rounded-full flex items-center justify-center shrink-0">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        {/* Info Items */}
+                        <div className="space-y-10">
+                            {[
+                                {
+                                    icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
+                                    label: t.seat,
+                                    val: "Av. da Liberdade, 110\n1250-144 Lisboa, Portugal"
+                                },
+                                {
+                                    icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>,
+                                    label: t.support,
+                                    val: "910 745 105",
+                                    desc: t.workDays
+                                }
+                            ].map((item, i) => (
+                                <div key={i} className="flex gap-5">
+                                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center border border-slate-100 shadow-sm flex-shrink-0">
+                                        {item.icon}
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-800 text-lg mb-1">{item.label}</h4>
+                                        <p className="text-slate-600 leading-relaxed whitespace-pre-line">{item.val}</p>
+                                        {item.desc && <p className="text-xs text-slate-400 mt-1 font-medium">{item.desc}</p>}
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 className="font-bold text-slate-800 mb-1">Sede Nacional</h4>
-                                    <p className="text-slate-600 text-sm">Av. da Liberdade, 110<br />1250-144 Lisboa, Portugal</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-blue-50 text-primary rounded-full flex items-center justify-center shrink-0">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                                </div>
-                                <div>
-                                    <h4 className="font-bold text-slate-800 mb-1">Linha de Apoio</h4>
-                                    <p className="text-slate-600 text-sm font-medium">910 745 105</p>
-                                    <p className="text-slate-500 text-xs mt-1">Dias úteis das 9h às 19h</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-blue-50 text-primary rounded-full flex items-center justify-center shrink-0">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                                </div>
-                                <div>
-                                    <h4 className="font-bold text-slate-800 mb-1">E-mail Comercial</h4>
-                                    <p className="text-slate-600 text-sm font-medium">geral@imovel-zeta.pt</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Contact Form */}
-                    <div className="lg:w-2/3">
-                        <div className="bg-white p-8 md:p-10 rounded-xl shadow-lg border border-slate-200">
-                            {sent ? (
-                                <div className="text-center py-16 slide-up">
-                                    <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-slate-800 mb-2">Mensagem Enviada!</h3>
-                                    <p className="text-slate-600 mb-8">Recebemos o seu contacto e um consultor irá ligar-lhe dentro de algumas horas.</p>
-                                    <button className="btn btn-outline" onClick={() => setSent(false)}>
-                                        Enviar Nova Mensagem
-                                    </button>
+                    {/* Right Column: Form */}
+                    <div className="lg:w-3/5 bg-white p-8 lg:p-12 rounded-3xl shadow-xl border border-slate-100 transform transition-all hover:shadow-2xl">
+                        {sent ? (
+                            <div className="text-center py-20 flex flex-col items-center">
+                                <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6">
+                                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" /></svg>
                                 </div>
-                            ) : (
-                                <form onSubmit={handleSubmit} className="space-y-6 slide-up">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label htmlFor="nome" className="input-label">Nome Completo *</label>
-                                            <input
-                                                id="nome"
-                                                type="text"
-                                                required
-                                                className="input-field"
-                                                placeholder="Ex: João da Silva"
-                                                value={form.nome}
-                                                onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                                                disabled={enviando}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="telefone" className="input-label">Telemóvel *</label>
-                                            <input
-                                                id="telefone"
-                                                type="tel"
-                                                required
-                                                className="input-field"
-                                                placeholder="+351 900 000 000"
-                                                value={form.telefone}
-                                                onChange={(e) => setForm({ ...form, telefone: e.target.value })}
-                                                disabled={enviando}
-                                            />
-                                        </div>
-                                    </div>
-
+                                <h3 className="text-2xl font-bold text-slate-800 mb-4">{lang === 'pt' ? 'Mensagem enviada!' : 'Message sent!'}</h3>
+                                <p className="text-slate-600 mb-8 max-w-sm">
+                                    {lang === 'pt'
+                                        ? "Obrigado por nos contactar. Um dos nossos consultores irá responder-lhe em menos de 2 horas úteis."
+                                        : "Thank you for contacting us. One of our consultants will respond to you within 2 business hours."}
+                                </p>
+                                <button
+                                    onClick={() => setSent(false)}
+                                    className="btn btn-outline"
+                                >
+                                    {lang === 'pt' ? 'Enviar outra mensagem' : 'Send another message'}
+                                </button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label htmlFor="email" className="input-label">E-mail *</label>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">{t.formName} *</label>
                                         <input
-                                            id="email"
-                                            type="email"
+                                            type="text"
                                             required
-                                            className="input-field"
-                                            placeholder="joao@email.com"
-                                            value={form.email}
-                                            onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                            disabled={enviando}
+                                            placeholder="Ex: João da Silva"
+                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                                            value={form.nome}
+                                            onChange={(e) => setForm({ ...form, nome: e.target.value })}
                                         />
                                     </div>
-
                                     <div>
-                                        <label htmlFor="mensagem" className="input-label">Motivo do Contacto</label>
-                                        <textarea
-                                            id="mensagem"
-                                            rows={4}
-                                            className="input-field resize-none"
-                                            placeholder="Descreva brevemente como podemos ajudar..."
-                                            value={form.mensagem}
-                                            onChange={(e) => setForm({ ...form, mensagem: e.target.value })}
-                                            disabled={enviando}
-                                        />
-                                    </div>
-
-                                    {/* Honeypot field - Hidden from real users but bots will fill it */}
-                                    <div className="hidden absolute opacity-0 -z-50" aria-hidden="true">
-                                        <label htmlFor="website">Website</label>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">{t.formPhone} *</label>
                                         <input
-                                            id="website"
-                                            type="url"
-                                            tabIndex={-1}
-                                            autoComplete="off"
-                                            value={form.honeypot}
-                                            onChange={(e) => setForm({ ...form, honeypot: e.target.value })}
+                                            type="tel"
+                                            required
+                                            placeholder="+351 900 000 000"
+                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                                            value={form.telefone}
+                                            onChange={(e) => setForm({ ...form, telefone: e.target.value })}
                                         />
                                     </div>
+                                </div>
 
-                                    <div className="flex items-start gap-3 mt-4">
-                                        <input type="checkbox" id="rgpd" required className="mt-1 h-4 w-4 text-primary rounded border-slate-300 focus:ring-primary" disabled={enviando} />
-                                        <label htmlFor="rgpd" className="text-xs text-slate-500 leading-relaxed cursor-pointer hover:text-slate-700 transition-colors">
-                                            Ao submeter este formulário, concordo que a Imóvel Zeta armazene e processe os dados pessoais fornecidos de acordo com a Política de Privacidade (Regime Geral de Proteção de Dados EU 2016/679).
-                                        </label>
-                                    </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-2">{t.formEmail} *</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        placeholder="joao@email.com"
+                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                                        value={form.email}
+                                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                    />
+                                </div>
 
-                                    <button
-                                        type="submit"
-                                        disabled={enviando}
-                                        className="btn btn-primary w-full md:w-auto px-10 py-3.5 text-lg shadow-md hover:shadow-lg mt-4 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                                    >
-                                        {enviando ? (
-                                            <>
-                                                <span className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
-                                                A Processar...
-                                            </>
-                                        ) : "Enviar Mensagem"}
-                                    </button>
-                                </form>
-                            )}
-                        </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-2">{t.formMsg} *</label>
+                                    <textarea
+                                        rows={4}
+                                        required
+                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none resize-none"
+                                        value={form.mensagem}
+                                        onChange={(e) => setForm({ ...form, mensagem: e.target.value })}
+                                    ></textarea>
+                                </div>
+
+                                {/* Honeypot field (hidden for users) */}
+                                <div className="hidden">
+                                    <input
+                                        type="text"
+                                        value={form.honeypot}
+                                        onChange={(e) => setForm({ ...form, honeypot: e.target.value })}
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                    />
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                    <input type="checkbox" required className="mt-1 w-4 h-4 text-primary" id="consent" />
+                                    <label htmlFor="consent" className="text-sm text-slate-500 leading-relaxed cursor-pointer">
+                                        {t.formConsent}
+                                    </label>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={enviando}
+                                    className="w-full btn btn-primary py-5 text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed group"
+                                >
+                                    {enviando ? t.sending : (
+                                        <span className="flex items-center justify-center gap-2">
+                                            {t.btnSend}
+                                            <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                        </span>
+                                    )}
+                                </button>
+                            </form>
+                        )}
                     </div>
-
                 </div>
             </div>
         </section>
