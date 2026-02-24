@@ -1,0 +1,35 @@
+
+> imovel@0.1.0 lint
+> eslint
+
+
+C:\Users\gabri\Downloads\imovel\src\components\AboutSection.tsx
+  55:44  warning  'i' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\gabri\Downloads\imovel\src\components\Chatbot.tsx
+  27:35  warning  'compact' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\gabri\Downloads\imovel\src\components\Dashboard.tsx
+   3:20  warning  'useEffect' is defined but never used          @typescript-eslint/no-unused-vars
+  37:19  warning  'setLeads' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\gabri\Downloads\imovel\src\components\FloatingChat.tsx
+  13:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:42  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gabri\Downloads\imovel\src\components\HowItWorks.tsx
+  155:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gabri\Downloads\imovel\src\components\Navbar.tsx
+   70:59  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  135:83  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gabri\Downloads\imovel\src\components\PropertiesSection.tsx
+  177:51  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gabri\Downloads\imovel\src\components\Testimonials.tsx
+  110:29  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  112:29  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+✖ 12 problems (8 errors, 4 warnings)
+
