@@ -25,20 +25,19 @@ export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lan
     ];
 
     const LangSelector = () => (
-        <div className="flex items-center gap-2 mr-4">
+        <div className="flex items-center gap-2 mr-4 text-[11px] font-black uppercase tracking-widest text-slate-400">
             <button
                 onClick={() => setLang("pt")}
-                className={`w-6 h-6 flex items-center justify-center rounded-full transition-all ${lang === 'pt' ? 'ring-2 ring-primary ring-offset-2 scale-110' : 'opacity-50 hover:opacity-100'}`}
-                title="Português"
+                className={`transition-all ${lang === 'pt' ? 'text-[#003DA5]' : 'hover:text-slate-800'}`}
             >
-                🇵🇹
+                PS
             </button>
+            <span className="opacity-20 text-slate-300">|</span>
             <button
                 onClick={() => setLang("en")}
-                className={`w-6 h-6 flex items-center justify-center rounded-full transition-all ${lang === 'en' ? 'ring-2 ring-primary ring-offset-2 scale-110' : 'opacity-50 hover:opacity-100'}`}
-                title="English"
+                className={`transition-all ${lang === 'en' ? 'text-[#003DA5]' : 'hover:text-slate-800'}`}
             >
-                🇺🇸
+                US
             </button>
         </div>
     );
@@ -77,24 +76,14 @@ export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lan
                             ))}
                         </ul>
 
-                        <div className="flex items-center border-l border-slate-200 pl-6">
+                        <div className="flex items-center border-l border-slate-200 pl-6 gap-6">
                             <LangSelector />
-                            <div className="flex items-center gap-3">
-                                <button
-                                    onClick={() => {
-                                        const el = document.getElementById("dashboard-layer");
-                                        if (el) el.style.display = "block";
-                                    }}
-                                    className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors"
-                                >
-                                    {t.intranet}
+                            <div className="flex items-center gap-6">
+                                <button className="text-[13px] font-black text-slate-500 hover:text-primary transition-colors uppercase tracking-widest whitespace-nowrap">
+                                    Login / Signup
                                 </button>
-                                <button
-                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                    onClick={() => (window as any).__openChat?.()}
-                                    className="btn btn-accent px-5 py-2 text-sm"
-                                >
-                                    {t.falarAgente}
+                                <button className="bg-[#003DA5] text-white px-8 py-3.5 rounded-2xl text-[12px] font-black uppercase tracking-[0.15em] hover:bg-slate-800 transition-all shadow-xl active:scale-95 whitespace-nowrap">
+                                    Contact Sales
                                 </button>
                             </div>
                         </div>
