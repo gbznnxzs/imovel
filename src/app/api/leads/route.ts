@@ -17,6 +17,10 @@ interface LeadPayload {
 }
 
 async function guardarNoSupabase(lead: LeadPayload): Promise<{ sucesso: boolean; id?: string }> {
+    if (!supabase) {
+        console.error("❌ [Supabase API] Cliente não inicializado. Verifique as variáveis de ambiente.");
+        return { sucesso: false };
+    }
     const { data, error } = await supabase
         .from('leads')
         .insert([{
