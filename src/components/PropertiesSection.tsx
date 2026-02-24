@@ -56,7 +56,9 @@ const PROPERTIES: Property[] = [
     },
 ];
 
-export default function PropertiesSection() {
+import { Lang } from "@/lib/i18n";
+
+export default function PropertiesSection({ lang }: { lang: Lang }) {
     const [filter, setFilter] = useState("Todos");
 
     const filtered = PROPERTIES.filter((p) => {
@@ -160,7 +162,10 @@ export default function PropertiesSection() {
                                 {/* Footer Action */}
                                 <div className="pt-4 flex justify-between items-center border-t border-slate-100">
                                     <span className="text-xs font-mono text-slate-400">Ref: {p.refCode}</span>
-                                    <button className="text-sm font-semibold text-primary group-hover:text-primary-dark flex items-center gap-1 transition-colors">
+                                    <button
+                                        onClick={() => (window as any).__openChat?.(`Olá! Vejo que tem interesse no imóvel **${p.titulo}**. Quer que eu verifique a disponibilidade para si?`)}
+                                        className="text-sm font-semibold text-primary group-hover:text-primary-dark flex items-center gap-1 transition-colors"
+                                    >
                                         Ver Detalhes <span className="transition-transform group-hover:translate-x-1">→</span>
                                     </button>
                                 </div>

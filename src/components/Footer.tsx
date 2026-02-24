@@ -1,4 +1,6 @@
-export default function Footer() {
+import { Lang } from "@/lib/i18n";
+
+export default function Footer({ lang }: { lang: Lang }) {
     const currentYear = new Date().getFullYear();
 
     return (
@@ -10,7 +12,7 @@ export default function Footer() {
                     <div>
                         <a href="#" className="flex items-center gap-2 mb-6">
                             <div className="w-10 h-10 bg-white flex items-center justify-center rounded-sm">
-                                <span className="text-primary font-bold text-xl tracking-tighter">IP</span>
+                                <span className="text-primary font-bold text-xl tracking-tighter">IZ</span>
                             </div>
                             <div className="flex flex-col text-white">
                                 <span className="text-xl font-bold leading-none">Imóvel Zeta</span>

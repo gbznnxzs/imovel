@@ -10,10 +10,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'ImóvelPrime | Agência Imobiliária em Portugal',
-  description: 'Compre, venda ou arrende casa em Portugal com os especialistas da ImóvelPrime. A melhor seleção de imóveis com o acompanhamento mais profissional do mercado.',
-  keywords: 'imobiliária, portugal, comprar casa, vender casa, apartamentos, moradias, imovelprime',
-  authors: [{ name: 'ImóvelPrime' }],
+  title: 'Imóvel Zeta | Agência Imobiliária em Portugal',
+  description: 'Compre, venda ou arrende casa em Portugal com os especialistas da Imóvel Zeta. A melhor seleção de imóveis com o acompanhamento mais profissional do mercado.',
+  keywords: 'imobiliária, portugal, comprar casa, vender casa, apartamentos, moradias, imovel zeta',
+  authors: [{ name: 'Imóvel Zeta' }],
 };
 
 export const viewport: Viewport = {

@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
-export default function ContactSection() {
+import { Lang } from "@/lib/i18n";
+
+export default function ContactSection({ lang }: { lang: Lang }) {
     const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "", honeypot: "" });
     const [sent, setSent] = useState(false);
     const [enviando, setEnviando] = useState(false);

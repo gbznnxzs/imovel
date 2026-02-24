@@ -1,4 +1,4 @@
-# 🏡 ImóvelPrime — Manual do Sistema de Qualificação Automática
+# 🏡 Imóvel Zeta — Manual do Sistema de Qualificação Automática
 
 > **Como este sistema reduz o tempo de resposta da sua agência em 80%**
 
@@ -71,7 +71,7 @@ Cliente → Chatbot (Web) → API /api/leads → Google Sheets → Consultor
 | **Next.js 14 (App Router)** | Framework web full-stack |
 | **TypeScript** | Tipagem segura, menos bugs |
 | **Tailwind CSS** | Estilização rápida e consistente |
-| **Google Sheets API v4** | Base de dados em tempo real |
+| **Supabase** | Base de dados em tempo real |
 | **RGPD (UE 2016/679)** | Conformidade legal automática |
 
 ---
@@ -102,23 +102,21 @@ npm run dev
 
 ---
 
-## 📊 Integração com Google Sheets
+## 📊 Integração com Supabase
 
-### Configuração (15 minutos, uma única vez)
+### Configuração (10 minutos, uma única vez)
 
-1. Aceda a [console.cloud.google.com](https://console.cloud.google.com)
-2. Crie um projeto novo → ative a **Google Sheets API**
-3. Crie uma **Conta de Serviço** e faça download do ficheiro JSON de credenciais
-4. Partilhe a sua folha de cálculo com o email da conta de serviço (permissão de Editor)
-5. Adicione ao `.env.local`:
+1. Aceda a [supabase.com](https://supabase.com)
+2. Crie um projeto novo → vá a **Project Settings** > **API**
+3. Adicione ao `.env.local`:
 
 ```env
-GOOGLE_SHEET_ID=SEU_ID_DA_FOLHA_AQUI
-GOOGLE_SERVICE_ACCOUNT_EMAIL=nome@projeto.iam.gserviceaccount.com
-GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+SUPABASE_URL=SUA_URL_AQUI
+SUPABASE_ANON_KEY=SUA_KEY_AQUI
+LEAD_WEBHOOK_URL=OPCIONAL_WEBHOOK_PARA_ZAPIER_MAKE
 ```
 
-6. No ficheiro `src/app/api/leads/route.ts`, descomente o bloco da Google Sheets API real (identificado por comentário `// Em produção`).
+4. Crie uma tabela `leads` com as colunas: `nome`, `telemovel`, `tipo_negocio`, `zona`, `orcamento`, `consentimento_rgpd`, `timestamp_iso`.
 
 ### Estrutura da Folha de Cálculo
 

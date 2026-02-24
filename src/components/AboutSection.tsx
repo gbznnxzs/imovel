@@ -1,4 +1,8 @@
-export default function AboutSection() {
+import { Lang, translations } from "@/lib/i18n";
+
+export default function AboutSection({ lang }: { lang: Lang }) {
+    const t = translations[lang].about;
+
     const stats = [
         { label: "Anos de Experiência", value: "15+" },
         { label: "Consultores Ativos", value: "340" },
@@ -14,16 +18,17 @@ export default function AboutSection() {
                     {/* Text Content */}
                     <div className="lg:w-1/2">
                         <span className="text-sm font-bold text-accent uppercase tracking-wider mb-2 block">
-                            Sobre a Imóvel Zeta
+                            {t.title}
                         </span>
                         <h2 className="text-3xl lg:text-4xl font-bold text-slate-800 mb-6 leading-tight">
-                            A Maior Rede Imobiliária Nacional
+                            {lang === 'pt' ? "A Maior Rede Imobiliária Nacional" : "The Largest National Real Estate Network"}
                         </h2>
 
                         <div className="space-y-4 text-slate-600 mb-8 max-w-xl text-lg">
                             <p>
-                                A <strong>Imóvel Zeta</strong> iniciou a sua operação em Portugal há mais de 15 anos com um objetivo claro: revolucionar o mercado imobiliário através de um serviço de excelência, transparência e profissionalismo absoluto.
+                                {t.desc}
                             </p>
+
                             <p>
                                 Hoje somos a marca de eleição dos portugueses no momento de vender, comprar ou arrendar casa. O nosso segredo? Profundo conhecimento local aliado a uma rede global de contactos fortíssima.
                             </p>

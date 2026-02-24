@@ -1,9 +1,8 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import Chatbot from "./Chatbot";
+import { Lang } from "@/lib/i18n";
 
-export default function FloatingChat() {
+export default function FloatingChat({ lang }: { lang: Lang }) {
     const [open, setOpen] = useState(false);
     const [notifCount, setNotifCount] = useState(1);
     const [showBalloon, setShowBalloon] = useState(false);
@@ -11,10 +10,13 @@ export default function FloatingChat() {
     // Register global opener
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).__openChat = () => {
+        (window as any).__openChat = (message?: string) => {
             setOpen(true);
             setNotifCount(0);
             setShowBalloon(false);
+            if (message) {
+                window.dispatchEvent(new CustomEvent("chat-custom-message", { detail: { message } }));
+            }
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return () => { delete (window as any).__openChat; };
@@ -34,6 +36,23 @@ export default function FloatingChat() {
         setShowBalloon(false);
     };
 
+    const t = {
+        pt: {
+            title: "Precisa de ajuda?",
+            desc: "Fale com um consultor agora. Respondemos em menos de 2 minutos.",
+            support: "Apoio ao Cliente",
+            location: "Imóvel Zeta Portugal",
+            badge: "Normalmente responde em 2 min"
+        },
+        en: {
+            title: "Need help?",
+            desc: "Talk to a consultant now. We respond in less than 2 minutes.",
+            support: "Customer Support",
+            location: "Imóvel Zeta Global",
+            badge: "Usually responds in 2 min"
+        }
+    }[lang];
+
     return (
         <>
             {/* ── Welcome Balloon ── */}
@@ -52,9 +71,9 @@ export default function FloatingChat() {
                         <div className="w-8 h-8 rounded-full bg-blue-50 text-primary flex items-center justify-center shrink-0">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
                         </div>
-                        <p className="font-bold text-slate-800 text-sm">Precisa de ajuda?</p>
+                        <p className="font-bold text-slate-800 text-sm">{t.title}</p>
                     </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">Fale com um consultor agora. Respondemos em menos de 2 minutos.</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">{t.desc}</p>
 
                     {/* Arrow pointing down */}
                     <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-b border-r border-slate-200 transform rotate-45" />
@@ -100,8 +119,8 @@ export default function FloatingChat() {
                                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-primary" />
                             </div>
                             <div>
-                                <p className="text-white font-bold text-sm">Apoio ao Cliente</p>
-                                <p className="text-blue-200 text-xs">Imóvel Zeta Portugal</p>
+                                <p className="text-white font-bold text-sm">{t.support}</p>
+                                <p className="text-blue-200 text-xs">{t.location}</p>
                             </div>
                         </div>
                         <button
@@ -115,12 +134,12 @@ export default function FloatingChat() {
                     {/* Banner message */}
                     <div className="bg-blue-50 px-4 py-2 flex items-center justify-center gap-2 border-b border-blue-100 shrink-0">
                         <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg>
-                        <span className="text-xs font-semibold text-primary">Normalmente responde em 2 min</span>
+                        <span className="text-xs font-semibold text-primary">{t.badge}</span>
                     </div>
 
                     {/* Chat body */}
                     <div className="flex-1 overflow-hidden" style={{ background: "#FAFAFA" }}>
-                        <Chatbot compact />
+                        <Chatbot compact lang={lang} />
                     </div>
                 </div>
             )}

@@ -1,8 +1,7 @@
-"use client";
-
 import { useState, useEffect } from "react";
+import { Lang, translations } from "@/lib/i18n";
 
-export default function Navbar() {
+export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lang) => void }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -14,13 +13,35 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const t = translations[lang].navbar;
+
     const menuItems = [
-        { label: "Comprar", href: "#imoveis" },
-        { label: "Arrendar", href: "#imoveis" },
-        { label: "Serviços", href: "#servicos" },
-        { label: "Sobre Nós", href: "#sobre-nos" },
-        { label: "Contactos", href: "#contacto" },
+        { label: t.comprar, href: "/#imoveis" },
+        { label: t.arrendar, href: "/#imoveis" },
+        { label: t.servicos, href: "/#servicos" },
+        { label: t.precos, href: "/precos" },
+        { label: t.sobre, href: "/#sobre-nos" },
+        { label: t.contactos, href: "/#contacto" },
     ];
+
+    const LangSelector = () => (
+        <div className="flex items-center gap-2 mr-4">
+            <button
+                onClick={() => setLang("pt")}
+                className={`w-6 h-6 flex items-center justify-center rounded-full transition-all ${lang === 'pt' ? 'ring-2 ring-primary ring-offset-2 scale-110' : 'opacity-50 hover:opacity-100'}`}
+                title="Português"
+            >
+                🇵🇹
+            </button>
+            <button
+                onClick={() => setLang("en")}
+                className={`w-6 h-6 flex items-center justify-center rounded-full transition-all ${lang === 'en' ? 'ring-2 ring-primary ring-offset-2 scale-110' : 'opacity-50 hover:opacity-100'}`}
+                title="English"
+            >
+                🇺🇸
+            </button>
+        </div>
+    );
 
     return (
         <>
@@ -31,13 +52,13 @@ export default function Navbar() {
                 <div className="container-custom flex items-center justify-between">
 
                     {/* Logo */}
-                    <a href="#" className="flex items-center gap-2 group">
+                    <a href="/" className="flex items-center gap-2 group">
                         <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-sm transition-transform group-hover:scale-105">
-                            <span className="text-white font-bold text-xl tracking-tighter">IP</span>
+                            <span className="text-white font-bold text-xl tracking-tighter">IZ</span>
                         </div>
                         <div className="flex flex-col">
                             <span className="text-xl font-bold text-slate-800 leading-none">Imóvel Zeta</span>
-                            <span className="text-[10px] uppercase font-bold text-accent tracking-wider leading-tight">Portugal</span>
+                            <span className="text-[10px] uppercase font-bold text-accent tracking-wider leading-tight">{t.local}</span>
                         </div>
                     </a>
 
@@ -56,36 +77,42 @@ export default function Navbar() {
                             ))}
                         </ul>
 
-                        <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
-                            <button
-                                onClick={() => {
-                                    const el = document.getElementById("dashboard-layer");
-                                    if (el) el.style.display = "block";
-                                }}
-                                className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors"
-                            >
-                                Intranet
-                            </button>
-                            <button
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                onClick={() => (window as any).__openChat?.()}
-                                className="btn btn-accent px-5 py-2 text-sm"
-                            >
-                                Falar com Agente
-                            </button>
+                        <div className="flex items-center border-l border-slate-200 pl-6">
+                            <LangSelector />
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={() => {
+                                        const el = document.getElementById("dashboard-layer");
+                                        if (el) el.style.display = "block";
+                                    }}
+                                    className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors"
+                                >
+                                    {t.intranet}
+                                </button>
+                                <button
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    onClick={() => (window as any).__openChat?.()}
+                                    className="btn btn-accent px-5 py-2 text-sm"
+                                >
+                                    {t.falarAgente}
+                                </button>
+                            </div>
                         </div>
                     </nav>
 
-                    {/* Mobile Menu Toggle */}
-                    <button
-                        className="lg:hidden p-2 text-slate-600 focus:outline-none"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        aria-label="Menu"
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-                        </svg>
-                    </button>
+                    {/* Mobile Lang Selector + Toggle */}
+                    <div className="flex items-center lg:hidden">
+                        <LangSelector />
+                        <button
+                            className="p-2 text-slate-600 focus:outline-none"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            aria-label="Menu"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </header>
 
@@ -127,7 +154,7 @@ export default function Navbar() {
                             }}
                             className="block w-full text-left px-4 py-3 rounded text-slate-700 font-medium hover:bg-slate-50"
                         >
-                            Intranet Agentes
+                            {t.intranet}
                         </button>
                     </div>
 
@@ -137,9 +164,9 @@ export default function Navbar() {
                             onClick={() => { setMobileMenuOpen(false); (window as any).__openChat?.(); }}
                             className="btn w-full bg-accent text-white hover:bg-accent-dark"
                         >
-                            Falar com Agente
+                            {t.falarAgente}
                         </button>
-                        <p className="text-center text-xs text-slate-500 mt-3">Ligue 910 745 105</p>
+                        <p className="text-center text-xs text-slate-500 mt-3">{t.ligue} 910 745 105</p>
                     </div>
                 </div>
             </div>

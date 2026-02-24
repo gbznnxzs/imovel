@@ -1,4 +1,6 @@
-export default function ServicesSection() {
+import { Lang } from "@/lib/i18n";
+
+export default function ServicesSection({ lang }: { lang: Lang }) {
     const services = [
         {
             title: "Comprar Imóvel",
@@ -74,7 +76,10 @@ export default function ServicesSection() {
                         <p className="text-blue-100 mb-8 max-w-lg text-lg">
                             Construa uma carreira de sucesso na Imóvel Zeta. Receba formação de elite, acesso à melhor tecnologia do mercado e comissões acima da média.
                         </p>
-                        <button className="btn bg-white text-primary hover:bg-slate-50 px-8 py-3 font-bold shadow-sm">
+                        <button
+                            onClick={() => (window as any).__openChat?.("Olá! Tenho interesse em saber mais sobre a carreira e as oportunidades na **Imóvel Zeta**. Pode ajudar-me?")}
+                            className="btn bg-white text-primary hover:bg-slate-50 px-8 py-3 font-bold shadow-sm"
+                        >
                             Saber mais sobre Carreiras
                         </button>
                     </div>

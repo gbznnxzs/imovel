@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { dispararAutomacao } from "@/lib/automacao";
 
 export const dynamic = "force-dynamic";
 
@@ -115,6 +116,9 @@ export async function POST(req: NextRequest) {
             throw new Error("Falha ao guardar na base de dados.");
         }
 
+        // 2.1 Disparar Automação Real-time (Webhook)
+        dispararAutomacao(body).catch(e => console.error("Erro assíncrono na automação:", e));
+
         // 3. Log de auditoria RGPD
         console.log(`✅ [RGPD Audit] Lead guardado | Nome: ${body.nome} | IP: ${req.headers.get("x-forwarded-for") ?? "local"} | Timestamp: ${body.timestampISO} | ID Supabase: ${resultado.id}`);
 
@@ -138,16 +142,11 @@ export async function POST(req: NextRequest) {
 }
 
 // ──────────────────────────────────────────────
-// GET /api/leads — lista todos os leads (demo)
+// GET /api/leads — Proteção de Dados (Internal Use Only)
 // ──────────────────────────────────────────────
 export async function GET() {
-    // Em produção: lê da Google Sheets ou base de dados
-    return NextResponse.json({
-        mensagem: "Em produção, esta rota devolve os leads da folha de cálculo.",
-        documentacao: "Configure GOOGLE_SHEET_ID e GOOGLE_SERVICE_ACCOUNT no .env.local",
-        exemplo_env: {
-            GOOGLE_SHEET_ID: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms",
-            GOOGLE_SERVICE_ACCOUNT_EMAIL: "imovelprime@projeto.iam.gserviceaccount.com",
-        },
-    });
+    return NextResponse.json(
+        { erro: "Acesso não autorizado. Esta rota é apenas para uso interno do sistema." },
+        { status: 403 }
+    );
 }

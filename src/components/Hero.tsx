@@ -1,11 +1,12 @@
-"use client";
-
 import { useState } from "react";
+import { Lang, translations } from "@/lib/i18n";
 
-export default function Hero() {
+export default function Hero({ lang }: { lang: Lang }) {
     const [tab, setTab] = useState<"comprar" | "arrendar">("comprar");
     const [location, setLocation] = useState("");
     const [type, setType] = useState("");
+
+    const t = translations[lang].hero;
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,13 +35,13 @@ export default function Hero() {
             <div className="container-custom relative z-10">
                 <div className="max-w-3xl slide-up">
                     <span className="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider mb-4 border border-white/30">
-                        A Rede Imobiliária N°1
+                        {t.badge}
                     </span>
                     <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight mb-6 text-balance drop-shadow-lg">
-                        Encontre a casa dos seus sonhos em Portugal.
+                        {t.title}
                     </h1>
                     <p className="text-lg md:text-xl text-blue-50 mb-10 max-w-2xl text-balance drop-shadow-md">
-                        Com mais de 10.000 imóveis e uma rede de consultores especializados, tornamos a compra ou arrendamento da sua casa num processo simples e seguro.
+                        {t.desc}
                     </p>
 
                     {/* Search Box */}
@@ -52,14 +53,14 @@ export default function Hero() {
                                     }`}
                                 onClick={() => setTab("comprar")}
                             >
-                                Comprar
+                                {t.tabBuy}
                             </button>
                             <button
                                 className={`flex-1 py-3 text-sm font-bold text-center border-b-2 transition-colors ${tab === "arrendar" ? "border-primary text-primary" : "border-transparent text-slate-500 hover:text-slate-800"
                                     }`}
                                 onClick={() => setTab("arrendar")}
                             >
-                                Arrendar
+                                {t.tabRent}
                             </button>
                         </div>
 
@@ -71,7 +72,7 @@ export default function Hero() {
                                 </span>
                                 <input
                                     type="text"
-                                    placeholder="Distrito, Concelho, Imóvel ou Ref."
+                                    placeholder={t.placeholder}
                                     className="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded text-slate-800 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-medium placeholder:font-normal"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
@@ -84,7 +85,7 @@ export default function Hero() {
                                     value={type}
                                     onChange={(e) => setType(e.target.value)}
                                 >
-                                    <option value="">Tipo de Imóvel</option>
+                                    <option value="">{t.typePlaceholder}</option>
                                     <option value="apartamento">Apartamento</option>
                                     <option value="moradia">Moradia</option>
                                     <option value="terreno">Terreno</option>
@@ -95,8 +96,8 @@ export default function Hero() {
                                 </span>
                             </div>
 
-                            <button type="submit" className="btn btn-accent md:w-32 py-3.5 text-base shadow-md">
-                                Pesquisar
+                            <button type="submit" className="btn btn-accent md:w-32 py-3.5 text-base shadow-md font-bold">
+                                {t.searchBtn}
                             </button>
                         </form>
                     </div>
@@ -105,11 +106,11 @@ export default function Hero() {
                     <div className="mt-8 flex items-center gap-6 text-sm text-blue-100 font-medium">
                         <div className="flex items-center gap-2">
                             <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-                            Mais de 10.000 Imóveis
+                            {t.trust1}
                         </div>
                         <div className="flex items-center gap-2">
                             <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-                            Consultores Certificados
+                            {t.trust2}
                         </div>
                     </div>
                 </div>
