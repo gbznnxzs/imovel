@@ -41,7 +41,7 @@ export default function ServicesSection() {
                         Acompanhamento 360° em Todo o Processo
                     </h2>
                     <p className="text-lg text-slate-600">
-                        A ImóvelPrime oferece soluções integradas para o mercado imobiliário, garantindo segurança, rapidez e o melhor negócio para os nossos clientes.
+                        A Imóvel Zeta oferece soluções integradas para o mercado imobiliário, garantindo segurança, rapidez e o melhor negócio para os nossos clientes.
                     </p>
                 </div>
 
@@ -72,7 +72,7 @@ export default function ServicesSection() {
                             Junte-se à Marca Número 1
                         </h3>
                         <p className="text-blue-100 mb-8 max-w-lg text-lg">
-                            Construa uma carreira de sucesso na ImóvelPrime. Receba formação de elite, acesso à melhor tecnologia do mercado e comissões acima da média.
+                            Construa uma carreira de sucesso na Imóvel Zeta. Receba formação de elite, acesso à melhor tecnologia do mercado e comissões acima da média.
                         </p>
                         <button className="btn bg-white text-primary hover:bg-slate-50 px-8 py-3 font-bold shadow-sm">
                             Saber mais sobre Carreiras

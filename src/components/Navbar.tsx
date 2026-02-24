@@ -36,7 +36,7 @@ export default function Navbar() {
                             <span className="text-white font-bold text-xl tracking-tighter">IP</span>
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-xl font-bold text-slate-800 leading-none">ImóvelPrime</span>
+                            <span className="text-xl font-bold text-slate-800 leading-none">Imóvel Zeta</span>
                             <span className="text-[10px] uppercase font-bold text-accent tracking-wider leading-tight">Portugal</span>
                         </div>
                     </a>
@@ -139,7 +139,7 @@ export default function Navbar() {
                         >
                             Falar com Agente
                         </button>
-                        <p className="text-center text-xs text-slate-500 mt-3">Ligue 210 000 000</p>
+                        <p className="text-center text-xs text-slate-500 mt-3">Ligue 910 745 105</p>
                     </div>
                 </div>
             </div>

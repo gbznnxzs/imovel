@@ -101,7 +101,7 @@ export default function FloatingChat() {
                             </div>
                             <div>
                                 <p className="text-white font-bold text-sm">Apoio ao Cliente</p>
-                                <p className="text-blue-200 text-xs">ImóvelPrime Portugal</p>
+                                <p className="text-blue-200 text-xs">Imóvel Zeta Portugal</p>
                             </div>
                         </div>
                         <button

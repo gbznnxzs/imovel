@@ -14,7 +14,7 @@ export default function AboutSection() {
                     {/* Text Content */}
                     <div className="lg:w-1/2">
                         <span className="text-sm font-bold text-accent uppercase tracking-wider mb-2 block">
-                            Sobre a ImóvelPrime
+                            Sobre a Imóvel Zeta
                         </span>
                         <h2 className="text-3xl lg:text-4xl font-bold text-slate-800 mb-6 leading-tight">
                             A Maior Rede Imobiliária Nacional
@@ -22,7 +22,7 @@ export default function AboutSection() {
 
                         <div className="space-y-4 text-slate-600 mb-8 max-w-xl text-lg">
                             <p>
-                                A <strong>ImóvelPrime</strong> iniciou a sua operação em Portugal há mais de 15 anos com um objetivo claro: revolucionar o mercado imobiliário através de um serviço de excelência, transparência e profissionalismo absoluto.
+                                A <strong>Imóvel Zeta</strong> iniciou a sua operação em Portugal há mais de 15 anos com um objetivo claro: revolucionar o mercado imobiliário através de um serviço de excelência, transparência e profissionalismo absoluto.
                             </p>
                             <p>
                                 Hoje somos a marca de eleição dos portugueses no momento de vender, comprar ou arrendar casa. O nosso segredo? Profundo conhecimento local aliado a uma rede global de contactos fortíssima.

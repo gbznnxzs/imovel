@@ -60,7 +60,7 @@ export default function ContactSection() {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-slate-800 mb-1">Linha de Apoio</h4>
-                                    <p className="text-slate-600 text-sm font-medium">+351 210 000 000</p>
+                                    <p className="text-slate-600 text-sm font-medium">910 745 105</p>
                                     <p className="text-slate-500 text-xs mt-1">Dias úteis das 9h às 19h</p>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@ export default function ContactSection() {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-slate-800 mb-1">E-mail Comercial</h4>
-                                    <p className="text-slate-600 text-sm font-medium">contacto@imovelprime.pt</p>
+                                    <p className="text-slate-600 text-sm font-medium">geral@imovel-zeta.pt</p>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +165,7 @@ export default function ContactSection() {
                                     <div className="flex items-start gap-3 mt-4">
                                         <input type="checkbox" id="rgpd" required className="mt-1 h-4 w-4 text-primary rounded border-slate-300 focus:ring-primary" disabled={enviando} />
                                         <label htmlFor="rgpd" className="text-xs text-slate-500 leading-relaxed cursor-pointer hover:text-slate-700 transition-colors">
-                                            Ao submeter este formulário, concordo que a ImóvelPrime armazene e processe os dados pessoais fornecidos de acordo com a Política de Privacidade (Regime Geral de Proteção de Dados EU 2016/679).
+                                            Ao submeter este formulário, concordo que a Imóvel Zeta armazene e processe os dados pessoais fornecidos de acordo com a Política de Privacidade (Regime Geral de Proteção de Dados EU 2016/679).
                                         </label>
                                     </div>
 

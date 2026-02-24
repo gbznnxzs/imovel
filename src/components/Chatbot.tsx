@@ -22,7 +22,7 @@ function validarTelemovel(valor: string): { valido: boolean; erro: string; norma
 }
 
 interface Msg { id: string; role: "bot" | "user"; text: string; options?: string[]; }
-type Etapa = "rgpd" | "nome" | "telemovel" | "tipo" | "zona" | "orcamento" | "done";
+type Etapa = "rgpd" | "nome" | "telemovel" | "confirm_data" | "tipo" | "zona" | "orcamento" | "done";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Chatbot({ compact = false }: { compact?: boolean }) {
@@ -80,7 +80,7 @@ export default function Chatbot({ compact = false }: { compact?: boolean }) {
     const start = async () => {
         setIniciado(true);
         setLead({ consentimentoRGPD: true });
-        await addBot("Olá! Bem-vindo ao atendimento da **ImóvelPrime**.", undefined, 400);
+        await addBot("Olá! Bem-vindo ao atendimento da **Imóvel Zeta**.", undefined, 400);
         await addBot("Antes de passar a um agente, preciso de alguns dados. Qual é o seu **nome completo**?", undefined, 800);
         setEtapa("nome");
         setTimeout(() => inputRef.current?.focus(), 100);
@@ -102,8 +102,23 @@ export default function Chatbot({ compact = false }: { compact?: boolean }) {
             if (!r.valido) { setErro(r.erro); return; }
             addUser(r.normalizado);
             setLead((p) => ({ ...p, telemovel: r.normalizado }));
-            await addBot("Para que serviço nos contacta?", ["🏠 Comprar Imóvel", "🔑 Arrendar", "💰 Vender Imóvel"]);
-            setEtapa("tipo");
+            await addBot(`Confirma os seus dados?\n\n**Nome:** ${lead.nome}\n**Telemóvel:** ${r.normalizado}`, ["✅ Confirmar", "✏ Alterar Nome", "📱 Alterar Telemóvel"]);
+            setEtapa("confirm_data");
+
+        } else if (etapa === "confirm_data") {
+            if (resposta.includes("Alterar Nome")) {
+                addUser("Alterar Nome");
+                await addBot("Sem problema. Qual é o seu **nome completo**?");
+                setEtapa("nome");
+            } else if (resposta.includes("Alterar Telemóvel")) {
+                addUser("Alterar Telemóvel");
+                await addBot("Com certeza. Qual o seu **número de telemóvel**?");
+                setEtapa("telemovel");
+            } else {
+                addUser("✅ Dados Confirmados");
+                await addBot("Excelente! Para que serviço nos contacta?", ["🏠 Comprar Imóvel", "🔑 Arrendar", "💰 Vender Imóvel"]);
+                setEtapa("tipo");
+            }
 
         } else if (etapa === "tipo") {
             addUser(resposta);
@@ -135,7 +150,7 @@ export default function Chatbot({ compact = false }: { compact?: boolean }) {
                 await addBot(`✅ **Informação registada.**\nUm consultor especializado da zona de **${lead.zona}** irá ligar-lhe dentro de minutos para o número ${lead.telemovel}.`);
                 setEtapa("done");
             } catch {
-                await addBot("⚠️ Ocorreu uma falha no sistema. Ligue-nos para o +351 210 000 000.");
+                await addBot("⚠️ Ocorreu uma falha no sistema. Ligue-nos para o 910 745 105.");
             } finally {
                 setEnviando(false);
             }
