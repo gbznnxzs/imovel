@@ -1,116 +1,117 @@
-"use client";
-
-import React from "react";
-import { Lang } from "@/lib/i18n";
+import { useState } from "react";
+import { Lang, translations } from "@/lib/i18n";
 
 export default function Hero({ lang }: { lang: Lang }) {
+    const [tab, setTab] = useState<"comprar" | "arrendar">("comprar");
+    const [location, setLocation] = useState("");
+    const [type, setType] = useState("");
+
+    const t = translations[lang].hero;
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Scroll to properties section
+        document.getElementById("imoveis")?.scrollIntoView({ behavior: "smooth" });
+    };
+
     return (
-        <section className="relative min-h-[90vh] flex items-center pt-32 pb-20 overflow-hidden bg-white">
-            <div className="container-custom relative z-10 grid lg:grid-cols-2 gap-20 items-center">
+        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-900">
+            {/* Background Image Setup */}
+            <div
+                className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+                    backgroundPosition: "center 60%"
+                }}
+            />
+            {/* Gradient Overlay for Corporate Look */}
+            <div
+                className="absolute inset-0 z-0 grad-primary opacity-85"
+            />
 
-                {/* Left Side: Elite Messaging */}
-                <div className="slide-up">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-full mb-8">
-                        <span className="w-2 h-2 bg-[#003DA5] rounded-full animate-pulse" />
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Institutional Command Console</span>
-                    </div>
-
-                    <h1 className="text-[52px] lg:text-[72px] leading-[0.95] font-black text-slate-900 tracking-tight mb-10 italic uppercase">
-                        GLOBAL REAL ESTATE.<br />
-                        <span className="text-[#003DA5]">INTELLIGENT INVESTMENTS.</span>
+            <div className="container-custom relative z-10">
+                <div className="max-w-3xl slide-up">
+                    <span className="inline-block py-1 px-4 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-white/30">
+                        {t.badge}
+                    </span>
+                    <h1 className="text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.1] mb-8 text-balance drop-shadow-2xl">
+                        {t.title}
                     </h1>
-
-                    <p className="text-slate-500 text-lg lg:text-xl font-medium max-w-xl mb-12 leading-relaxed">
-                        AI-Driven Platform for High-Net-worth individuals. <br />
-                        <span className="text-slate-900 font-bold">Access off-market opportunities worldwide.</span>
+                    <p className="text-xl md:text-2xl text-blue-50/90 mb-12 max-w-2xl text-balance drop-shadow-lg font-medium leading-relaxed">
+                        {t.desc}
                     </p>
 
-                    <div className="grid md:grid-cols-2 gap-6 max-w-2xl">
-                        {[
-                            { name: "Lisboa, Portugal", status: "ACTIVE HUB", icon: "L", coords: "25.7323° N, 0.2393° W" },
-                            { name: "Dubai, EAU", status: "INVESTMENT", icon: "D", coords: "33.7233° N, 55.2102° E" },
-                            { name: "Miami, EUA", status: "PREMIUM", icon: "M", coords: "25.7617° N, 80.1918° W" },
-                            { name: "S.Paulo, Brasil", status: "GROWTH", icon: "S", coords: "23.5505° S, 46.6333° W" }
-                        ].map((hub, i) => (
-                            <div key={i} className="flex items-center justify-between p-6 bg-slate-50/80 rounded-3xl border border-slate-100 hover:border-primary/20 transition-all group/item relative">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#003DA5] flex items-center justify-center text-white text-[10px] font-black group-hover/item:scale-110 transition-transform">
-                                        {hub.icon}
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-slate-900 text-[13px] font-black tracking-tight">{hub.name}</span>
-                                        <div className="flex flex-col mt-1">
-                                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</span>
-                                            <span className="text-[10px] font-black text-[#DC1C2E] uppercase tracking-widest">{hub.status}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col items-end gap-1">
-                                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
-                                        <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" /></svg>
-                                    </div>
-                                    <span className="text-[8px] text-slate-300 font-mono tracking-tighter">{hub.coords}</span>
-                                </div>
+                    {/* Search Box */}
+                    <div className="glass rounded-2xl shadow-premium p-2 md:p-3 max-w-4xl border-white/20">
+                        {/* Tabs */}
+                        <div className="flex mb-3 border-b border-slate-200">
+                            <button
+                                className={`flex-1 py-3 text-sm font-bold text-center border-b-2 transition-colors ${tab === "comprar" ? "border-primary text-primary" : "border-transparent text-slate-500 hover:text-slate-800"
+                                    }`}
+                                onClick={() => setTab("comprar")}
+                            >
+                                {t.tabBuy}
+                            </button>
+                            <button
+                                className={`flex-1 py-3 text-sm font-bold text-center border-b-2 transition-colors ${tab === "arrendar" ? "border-primary text-primary" : "border-transparent text-slate-500 hover:text-slate-800"
+                                    }`}
+                                onClick={() => setTab("arrendar")}
+                            >
+                                {t.tabRent}
+                            </button>
+                        </div>
+
+                        {/* Form */}
+                        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3 p-2">
+                            <div className="flex-1 relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                </span>
+                                <input
+                                    type="text"
+                                    placeholder={t.placeholder}
+                                    className="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded text-slate-800 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-medium placeholder:font-normal"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                />
                             </div>
-                        ))}
+
+                            <div className="md:w-48 relative">
+                                <select
+                                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded text-slate-800 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none font-medium"
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
+                                >
+                                    <option value="">{t.typePlaceholder}</option>
+                                    <option value="apartamento">Apartamento</option>
+                                    <option value="moradia">Moradia</option>
+                                    <option value="terreno">Terreno</option>
+                                    <option value="escritorio">Escritório</option>
+                                </select>
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                                </span>
+                            </div>
+
+                            <button type="submit" className="btn btn-accent md:w-32 py-3.5 text-base shadow-md font-bold">
+                                {t.searchBtn}
+                            </button>
+                        </form>
                     </div>
-                </div>
 
-                {/* Right Side: Command Container with World Map Arcs */}
-                <div className="relative slide-in-right">
-                    <div className="bg-[#050A18] rounded-[3.5rem] p-1 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] relative overflow-hidden group border-[12px] border-slate-900 min-h-[580px]">
-                        <div className="absolute inset-0 bg-blue-500/5 opacity-40 mix-blend-overlay" />
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#003DA5]/60 to-transparent animate-scanLine" />
-
-                        <div className="absolute inset-x-0 top-0 h-full p-12 flex flex-col">
-                            {/* World Map SVG with Arc Connections */}
-                            <div className="flex-1 relative flex items-center justify-center">
-                                <svg className="w-full h-full text-slate-700/20" fill="currentColor" viewBox="0 0 1000 500">
-                                    <g opacity="0.1" fill="white">
-                                        <path d="M100,100 L250,100 L280,300 L120,320 Z" />
-                                        <path d="M150,320 L280,300 L250,450 L180,450 Z" />
-                                        <path d="M450,80 L550,80 L580,250 L420,250 Z" />
-                                        <path d="M480,250 L580,250 L550,420 L450,420 Z" />
-                                        <path d="M600,100 L850,100 L880,350 L620,350 Z" />
-                                        <path d="M750,350 L850,350 L820,450 L780,450 Z" />
-                                    </g>
-
-                                    <path d="M480,180 Q600,120 780,220" fill="none" stroke="#003DA5" strokeWidth="1.5" strokeDasharray="6,4" className="opacity-60" />
-                                    <path d="M480,180 Q350,150 220,280" fill="none" stroke="#003DA5" strokeWidth="1.5" strokeDasharray="6,4" className="opacity-60" />
-                                    <path d="M480,180 Q520,320 250,400" fill="none" stroke="#003DA5" strokeWidth="1.5" strokeDasharray="6,4" className="opacity-60" />
-
-                                    <circle cx="480" cy="180" r="10" fill="#003DA5" className="animate-pulse" />
-                                    <circle cx="480" cy="180" r="4" fill="white" />
-
-                                    <circle cx="780" cy="220" r="6" fill="#FACC15" />
-                                    <circle cx="220" cy="280" r="6" fill="#FACC15" />
-                                    <circle cx="250" cy="400" r="6" fill="#FACC15" />
-                                </svg>
-                            </div>
-
-                            <div className="flex justify-between items-end border-t border-white/5 pt-8 mt-auto">
-                                <div className="flex flex-col gap-1">
-                                    <div className="w-20 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                        <div className="w-2/3 h-full bg-[#003DA5] animate-pulse" />
-                                    </div>
-                                    <span className="text-[10px] font-mono text-white/30 uppercase tracking-[0.3em]">ZETA_SYNC_ACTIVE</span>
-                                </div>
-                                <span className="text-white/20 font-black text-[32px] tracking-tighter italic uppercase select-none">COMMAND_CTR</span>
-                            </div>
+                    {/* Trust indicators */}
+                    <div className="mt-8 flex items-center gap-6 text-sm text-blue-100 font-medium">
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                            {t.trust1}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                            {t.trust2}
                         </div>
                     </div>
                 </div>
             </div>
-
-            <style jsx>{`
-                @keyframes scanLine {
-                    0% { top: -10%; }
-                    100% { top: 110%; }
-                }
-                .animate-scanLine {
-                    animation: scanLine 6s linear infinite;
-                }
-            `}</style>
         </section>
     );
 }
