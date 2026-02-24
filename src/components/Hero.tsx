@@ -1,117 +1,134 @@
-import { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Lang, translations } from "@/lib/i18n";
+import { supabase } from "@/lib/supabase";
 
 export default function Hero({ lang }: { lang: Lang }) {
-    const [tab, setTab] = useState<"comprar" | "arrendar">("comprar");
-    const [location, setLocation] = useState("");
-    const [type, setType] = useState("");
+    const [user, setUser] = useState<any>(null);
 
-    const t = translations[lang].hero;
-
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Scroll to properties section
-        document.getElementById("imoveis")?.scrollIntoView({ behavior: "smooth" });
-    };
+    useEffect(() => {
+        if (supabase) {
+            supabase.auth.getSession().then(({ data }: { data: { session: any } }) => {
+                setUser(data.session?.user ?? null);
+            });
+        }
+    }, []);
 
     return (
-        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-900">
-            {/* Background Image Setup */}
-            <div
-                className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-                style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
-                    backgroundPosition: "center 60%"
-                }}
-            />
-            {/* Gradient Overlay for Corporate Look */}
-            <div
-                className="absolute inset-0 z-0 grad-primary opacity-85"
-            />
+        <section className="relative min-h-[90vh] flex items-center pt-32 pb-20 overflow-hidden bg-white">
+            <div className="container-custom relative z-10 grid lg:grid-cols-2 gap-20 items-center">
 
-            <div className="container-custom relative z-10">
-                <div className="max-w-3xl slide-up">
-                    <span className="inline-block py-1 px-4 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-white/30">
-                        {t.badge}
-                    </span>
-                    <h1 className="text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.1] mb-8 text-balance drop-shadow-2xl">
-                        {t.title}
-                    </h1>
-                    <p className="text-xl md:text-2xl text-blue-50/90 mb-12 max-w-2xl text-balance drop-shadow-lg font-medium leading-relaxed">
-                        {t.desc}
-                    </p>
-
-                    {/* Search Box */}
-                    <div className="glass rounded-2xl shadow-premium p-2 md:p-3 max-w-4xl border-white/20">
-                        {/* Tabs */}
-                        <div className="flex mb-3 border-b border-slate-200">
-                            <button
-                                className={`flex-1 py-3 text-sm font-bold text-center border-b-2 transition-colors ${tab === "comprar" ? "border-primary text-primary" : "border-transparent text-slate-500 hover:text-slate-800"
-                                    }`}
-                                onClick={() => setTab("comprar")}
-                            >
-                                {t.tabBuy}
-                            </button>
-                            <button
-                                className={`flex-1 py-3 text-sm font-bold text-center border-b-2 transition-colors ${tab === "arrendar" ? "border-primary text-primary" : "border-transparent text-slate-500 hover:text-slate-800"
-                                    }`}
-                                onClick={() => setTab("arrendar")}
-                            >
-                                {t.tabRent}
-                            </button>
-                        </div>
-
-                        {/* Form */}
-                        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3 p-2">
-                            <div className="flex-1 relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                </span>
-                                <input
-                                    type="text"
-                                    placeholder={t.placeholder}
-                                    className="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded text-slate-800 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-medium placeholder:font-normal"
-                                    value={location}
-                                    onChange={(e) => setLocation(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="md:w-48 relative">
-                                <select
-                                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded text-slate-800 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none font-medium"
-                                    value={type}
-                                    onChange={(e) => setType(e.target.value)}
-                                >
-                                    <option value="">{t.typePlaceholder}</option>
-                                    <option value="apartamento">Apartamento</option>
-                                    <option value="moradia">Moradia</option>
-                                    <option value="terreno">Terreno</option>
-                                    <option value="escritorio">Escritório</option>
-                                </select>
-                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                                </span>
-                            </div>
-
-                            <button type="submit" className="btn btn-accent md:w-32 py-3.5 text-base shadow-md font-bold">
-                                {t.searchBtn}
-                            </button>
-                        </form>
+                {/* Left Side: Elite Messaging */}
+                <div className="slide-up">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-full mb-8">
+                        <span className="w-2 h-2 bg-[#003DA5] rounded-full animate-pulse" />
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Institutional Command Console</span>
                     </div>
 
-                    {/* Trust indicators */}
-                    <div className="mt-8 flex items-center gap-6 text-sm text-blue-100 font-medium">
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-                            {t.trust1}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-                            {t.trust2}
+                    <h1 className="text-[52px] lg:text-[72px] leading-[0.95] font-black text-slate-900 tracking-tight mb-10 italic uppercase">
+                        GLOBAL REAL ESTATE.<br />
+                        <span className="text-[#003DA5]">INVESTIMENTOS INTELIGENTES.</span>
+                    </h1>
+
+                    <p className="text-slate-500 text-lg lg:text-xl font-medium max-w-xl mb-12 leading-relaxed">
+                        Plataforma para investidores institucionais e indivíduos de alto património. <br />
+                        <span className="text-slate-900 font-bold">Aceda a oportunidades exclusivas em tempo real.</span>
+                    </p>
+
+                    <div className="grid md:grid-cols-2 gap-6 max-w-2xl">
+                        {[
+                            { name: "Lisboa, Portugal", status: "ACTIVE HUB", icon: "L", coords: "25.7323° N, 0.2393° W" },
+                            { name: "Dubai, EAU", status: "INVESTMENT", icon: "D", coords: "33.7233° N, 55.2102° E" },
+                            { name: "Miami, EUA", status: "PREMIUM", icon: "M", coords: "25.7617° N, 80.1918° W" },
+                            { name: "S.Paulo, Brasil", status: "GROWTH", icon: "S", coords: "23.5505° S, 46.6333° W" }
+                        ].map((hub, i) => (
+                            <div key={i} className="flex items-center justify-between p-6 bg-slate-50/80 rounded-3xl border border-slate-100 hover:border-primary/20 transition-all group/item relative">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-[#003DA5] flex items-center justify-center text-white text-[10px] font-black group-hover/item:scale-110 transition-transform">
+                                        {hub.icon}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-slate-900 text-[13px] font-black tracking-tight">{hub.name}</span>
+                                        <div className="flex flex-col mt-1">
+                                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</span>
+                                            <span className="text-[10px] font-black text-[#DC1C2E] uppercase tracking-widest">{hub.status}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-end gap-1">
+                                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                                        <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" /></svg>
+                                    </div>
+                                    <span className="text-[8px] text-slate-300 font-mono tracking-tighter">{hub.coords}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Right Side: FORCED DARK COMMAND CONTAINER */}
+                <div className="relative slide-in-right">
+                    <div className="bg-slate-950 rounded-[3.5rem] p-1 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] relative overflow-hidden group border-[12px] border-slate-900 min-h-[580px]">
+                        <div className="absolute inset-0 bg-blue-500/5 opacity-40 mix-blend-overlay" />
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#003DA5]/60 to-transparent animate-scanLine" />
+
+                        <div className="absolute inset-x-0 top-0 h-full p-12 flex flex-col justify-center items-center">
+                            {/* Command Center Visualization */}
+                            <div className="flex-1 relative w-full flex items-center justify-center">
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="w-[300px] h-[300px] border border-[#003DA5]/20 rounded-full animate-ping opacity-20" />
+                                    <div className="w-[450px] h-[450px] border border-[#003DA5]/10 rounded-full animate-pulse absolute" />
+                                </div>
+
+                                <div className="relative z-10 text-center">
+                                    <div className="inline-block px-4 py-1.5 bg-slate-900/80 border border-slate-800 rounded-full mb-6 backdrop-blur-md">
+                                        <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">System.Zeta_Active</span>
+                                    </div>
+                                    <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter mb-4 leading-none">
+                                        Global Performance<br />
+                                        <span className="text-[#003DA5]">Dashboard</span>
+                                    </h2>
+                                    <p className="text-slate-400 text-xs font-medium max-w-[280px] mx-auto leading-relaxed">
+                                        Monitoring high-yield off-market assets across our strategic global hubs.
+                                    </p>
+
+                                    <div className="mt-10 flex flex-col items-center gap-4">
+                                        <div className="flex gap-2">
+                                            {[1, 2, 3, 4].map(x => (
+                                                <div key={x} className="w-12 h-1 bg-slate-800 rounded-full overflow-hidden">
+                                                    <div className="w-full h-full bg-[#003DA5] origin-left animate-pulse" style={{ animationDelay: `${x * 0.2}s` }} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Processing_Global_Data_Streams</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full items-end border-t border-white/5 pt-8 mt-auto">
+                                <div className="flex flex-col gap-1">
+                                    <div className="w-20 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                        <div className="w-2/3 h-full bg-[#003DA5] animate-pulse" />
+                                    </div>
+                                    <span className="text-[10px] font-mono text-white/30 uppercase tracking-[0.3em]">ZETA_SYNC_V3.14</span>
+                                </div>
+                                <span className="text-white/20 font-black text-[32px] tracking-tighter italic uppercase select-none">COMMAND_CTR</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <style jsx>{`
+                @keyframes scanLine {
+                    0% { top: -10%; }
+                    100% { top: 110%; }
+                }
+                .animate-scanLine {
+                    animation: scanLine 6s linear infinite;
+                }
+            `}</style>
         </section>
     );
 }

@@ -1,17 +1,44 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Lang, translations } from "@/lib/i18n";
+import { supabase } from "@/lib/supabase";
+import Link from "next/link";
 
 export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lang) => void }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [user, setUser] = useState<any>(null);
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 10);
         };
         window.addEventListener("scroll", handleScroll, { passive: true });
+
+        // Listen for auth changes
+        if (supabase) {
+            supabase.auth.getSession().then(({ data }: { data: { session: any } }) => {
+                setUser(data.session?.user ?? null);
+            });
+            const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+                setUser(session?.user ?? null);
+            });
+            return () => {
+                window.removeEventListener("scroll", handleScroll);
+                subscription.unsubscribe();
+            };
+        }
+
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    const handleLogout = async () => {
+        if (supabase) {
+            await supabase.auth.signOut();
+            window.location.href = "/";
+        }
+    };
 
     const t = translations[lang].navbar;
 
@@ -23,6 +50,23 @@ export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lan
         { label: t.sobre, href: "/#sobre-nos" },
         { label: t.contactos, href: "/#contacto" },
     ];
+
+    const UserMenu = () => (
+        <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="text-sm font-bold text-slate-700 hover:text-primary transition-all uppercase tracking-widest">
+                Dashboard
+            </Link>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-full border border-slate-200 group relative cursor-pointer">
+                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-[10px] font-bold uppercase">
+                    {user?.email?.charAt(0) || "U"}
+                </div>
+                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest hidden sm:inline">{user?.email?.split('@')[0]}</span>
+                <button onClick={handleLogout} className="text-[9px] font-black text-accent uppercase tracking-tighter hover:underline px-2">
+                    Sair
+                </button>
+            </div>
+        </div>
+    );
 
     const LangSelector = () => (
         <div className="flex items-center gap-2 mr-4">
@@ -52,7 +96,7 @@ export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lan
                 <div className="container-custom flex items-center justify-between">
 
                     {/* Logo */}
-                    <a href="/" className="flex items-center gap-2 group">
+                    <Link href="/" className="flex items-center gap-2 group">
                         <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-sm transition-transform group-hover:scale-105">
                             <span className="text-white font-bold text-xl tracking-tighter">IZ</span>
                         </div>
@@ -60,48 +104,40 @@ export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lan
                             <span className="text-xl font-bold text-slate-800 leading-none">Imóvel Zeta</span>
                             <span className="text-[10px] uppercase font-bold text-accent tracking-wider leading-tight">{t.local}</span>
                         </div>
-                    </a>
+                    </Link>
 
                     {/* Desktop Nav */}
                     <nav className="hidden lg:flex items-center gap-8">
                         <ul className="flex items-center gap-6">
                             {menuItems.map((item) => (
                                 <li key={item.label}>
-                                    <a
+                                    <Link
                                         href={item.href}
                                         className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors"
                                     >
                                         {item.label}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
 
-                        <div className="flex items-center border-l border-slate-200 pl-6">
+                        <div className="flex items-center border-l border-slate-200 pl-6 gap-6">
                             <LangSelector />
-                            <div className="flex items-center gap-3">
-                                <button
-                                    onClick={() => {
-                                        const el = document.getElementById("dashboard-layer");
-                                        if (el) el.style.display = "block";
-                                    }}
-                                    className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors"
-                                >
-                                    {t.intranet}
-                                </button>
-                                <button
-                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                    onClick={() => (window as any).__openChat?.()}
-                                    className="btn btn-accent px-5 py-2 text-sm"
-                                >
-                                    {t.falarAgente}
-                                </button>
-                            </div>
+                            {user ? <UserMenu /> : (
+                                <div className="flex items-center gap-4">
+                                    <Link href="/login" className="text-sm font-bold text-slate-600 hover:text-primary border-2 border-slate-100 px-5 py-2 rounded-xl transition-all">
+                                        Login
+                                    </Link>
+                                    <Link href="/precos" className="bg-primary text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-dark transition-all shadow-lg active:scale-95">
+                                        Contact Sales
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </nav>
 
                     {/* Mobile Lang Selector + Toggle */}
-                    <div className="flex items-center lg:hidden">
+                    <div className="flex items-center lg:hidden gap-4">
                         <LangSelector />
                         <button
                             className="p-2 text-slate-600 focus:outline-none"
@@ -136,27 +172,29 @@ export default function Navbar({ lang, setLang }: { lang: Lang, setLang: (l: Lan
 
                     <div className="flex-1 overflow-y-auto py-4 px-4 flex flex-col gap-2">
                         {menuItems.map((item) => (
-                            <a
+                            <Link
                                 key={item.label}
                                 href={item.href}
                                 className="block px-4 py-3 rounded text-slate-700 font-medium hover:bg-slate-50 hover:text-primary transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
                             >
                                 {item.label}
-                            </a>
+                            </Link>
                         ))}
                         <hr className="my-2 border-slate-100" />
-                    </div>
 
-                    <div className="p-4 border-t border-slate-100">
-                        <button
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            onClick={() => { setMobileMenuOpen(false); (window as any).__openChat?.(); }}
-                            className="btn w-full bg-accent text-white hover:bg-accent-dark"
-                        >
-                            {t.falarAgente}
-                        </button>
-                        <p className="text-center text-xs text-slate-500 mt-3">{t.ligue} 910 745 105</p>
+                        {user ? (
+                            <div className="px-4 py-3 border border-slate-100 rounded-xl bg-slate-50">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">User</span>
+                                <div className="text-sm font-bold text-slate-900 mb-4">{user.email}</div>
+                                <button onClick={handleLogout} className="w-full text-left text-xs font-black text-accent uppercase tracking-widest">Logout</button>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col gap-2">
+                                <Link href="/login" className="block px-4 py-3 rounded text-slate-700 font-bold hover:bg-slate-50" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                                <Link href="/precos" className="block px-4 py-3 rounded bg-primary text-white font-bold text-center" onClick={() => setMobileMenuOpen(false)}>Contact Sales</Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
